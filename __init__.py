@@ -31,7 +31,8 @@ class Command:
 
     def on_start(self, ed_self):
 
-        timer_proc(TIMER_START, 'module=cuda_auto_save;func=timer_tick;', opt_save_interval*1000)
+        if opt_save_interval>0:
+            timer_proc(TIMER_START, 'module=cuda_auto_save;func=timer_tick;', opt_save_interval*1000)
 
     def config(self):
 
