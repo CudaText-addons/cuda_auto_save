@@ -1,6 +1,6 @@
 [info]
 title=Auto Save
-desc=Saves modified files automatically: before file closing (by option, default is off), by timer (default interval 30sec), on application deactivation
+desc=Saves modified files automatically: before file closing (by option, default is off), by timer (default interval 30sec), on application deactivation and changing active tab (by option, default is off)
 type=cudatext-plugin
 subdir=cuda_auto_save
 homepage=https://github.com/CudaText-addons/cuda_auto_save
@@ -8,7 +8,7 @@ api=1.0.351
 
 [item1]
 section=events
-events=on_start,on_close_pre,on_app_deactivate
+events=on_start
 
 [item100]
 section=commands
