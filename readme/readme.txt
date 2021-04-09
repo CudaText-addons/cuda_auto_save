@@ -1,6 +1,6 @@
 Plugin for CudaText.
 
-"Auto Save" automatically saves modified files, it works only with named tabs
+"Auto Save" automatically saves modified files. It handles only named tabs,
 ignoring untitled tabs.
 
 Plugin options
@@ -29,7 +29,7 @@ You can access to options using "Options / Settings-plugins / Auto Save / Config
 About
 -----
 
-Author:       Alexey Torgashin (CudaText)
-Contributors:
-              @JairoMartinezA (at GitHub)
-License:      MIT
+Authors:
+  Alexey Torgashin (CudaText)
+  Jairo Martinez Antonio, https://github.com/JairoMartinezA
+License: MIT
