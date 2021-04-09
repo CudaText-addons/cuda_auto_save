@@ -1,6 +1,13 @@
+2021.04.07 (patch by @JairoMartinezA)
++ added option "save_on_tab_change" (0/1) to auto-save file when user switches
+  between tabs
++ added option "save_max_MB_file_size" (0+) to control the max file size in MB
+  where the plugin can proceed with auto saving.
+* reworked code
 
 2020.10.04
-+ added option "on_deactivate" (0/1) to auto-save file when application looses focus; requires CudaText 1.114
++ added option "on_deactivate" (0/1) to auto-save file when application looses
+  focus; requires CudaText 1.114
 
 2018.06.09
-initial
++ initial
