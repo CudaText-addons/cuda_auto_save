@@ -1,3 +1,6 @@
+2021.06.21 (patch by @JairoMartinezA)
+- improvement to handle moved or deleted files.
+
 2021.04.07 (patch by @JairoMartinezA)
 + added option "save_on_tab_change" (0/1) to auto-save file when user switches
   between tabs

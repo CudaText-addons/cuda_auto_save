@@ -62,12 +62,15 @@ def save_one(e, msg):
 
     Log.debug('Processing file: ' + fn)
     if e.get_prop(PROP_MODIFIED, ''):
-        fn_KB_size = path.getsize(fn) // 1024
-        Log.debug(get_log_file_size(fn_KB_size))
+        if path.isfile(fn):
+            fn_KB_size = path.getsize(fn) // 1024
+            Log.debug(get_log_file_size(fn_KB_size))
 
-        if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
-            e.save()
-            Log.info(msg + fn)
+            if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
+                e.save()
+                Log.info(msg + fn)
+        else:
+            Log.info('File was moved or deleted: ' + fn)
 
 
 def timer_tick(tag='', info=''):
