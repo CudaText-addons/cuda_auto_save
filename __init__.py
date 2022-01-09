@@ -1,6 +1,5 @@
 from datetime import datetime
 from os import path, remove
-
 from cudatext import *
 
 plugin_name = __name__
@@ -11,6 +10,8 @@ opt_save_max_mb_size_file = 5
 opt_save_onclose = False
 opt_save_ondeact = False
 opt_save_ontabchange = False
+opt_save_session = True
+opt_session_flags = ''
 
 
 # Simple implementation of logger.
@@ -49,10 +50,21 @@ def get_log_file_size(fn_KB_size):
 
 
 def save_all(msg):
-
-    for h in ed_handles():
-        e = Editor(h)
-        save_one(e, 'Saving file (' + msg + '): ')
+    global opt_save_session
+    global opt_session_flags
+    
+    if opt_save_session:
+        text = app_path(APP_FILE_SESSION)
+        if app_api_version()>='1.0.415':
+            text += ';'+opt_session_flags
+            if msg=='By timer':
+                text += 't'
+        app_proc(PROC_SAVE_SESSION, text)
+        Log.info('Saving session (' + msg + ')')
+    else:
+        for h in ed_handles():
+            e = Editor(h)
+            save_one(e, 'Saving file (' + msg + '): ')
 
 
 def save_one(e, msg):
@@ -83,6 +95,8 @@ def recreate_events(inc_event='', setup_timer=1):
     global opt_save_onclose
     global opt_save_ondeact
     global opt_save_ontabchange
+    global opt_save_session
+    global opt_session_flags
 
     # Read settings if config file exists.
     if path.isfile(fn_config):
@@ -91,6 +105,8 @@ def recreate_events(inc_event='', setup_timer=1):
         opt_save_onclose = str_to_bool(ini_read(fn_config, 'op', 'save_before_closing_tab', bool_to_str(opt_save_onclose)))
         opt_save_ondeact = str_to_bool(ini_read(fn_config, 'op', 'save_on_deactivate', bool_to_str(opt_save_ondeact)))
         opt_save_ontabchange = str_to_bool(ini_read(fn_config, 'op', 'save_on_tab_change', bool_to_str(opt_save_ontabchange)))
+        opt_save_session = str_to_bool(ini_read(fn_config, 'op', 'save_session', bool_to_str(opt_save_session)))
+        opt_session_flags = ini_read(fn_config, 'op', 'session_flags', opt_session_flags)
 
     events = []
     if inc_event: events.append(inc_event)
@@ -135,12 +151,15 @@ class Command:
         with open(fn_config, "a") as f:
             f.write('; save_interval_seconds=0 to deactivate.\n')
             f.write('; save_max_MB_file_size=0 to deactivate.\n')
+            f.write('; session_flags can have chars "n", "u".\n')
 
         ini_write(fn_config, 'op', 'save_interval_seconds', str(opt_save_interval_seconds))
         ini_write(fn_config, 'op', 'save_max_MB_file_size', str(opt_save_max_mb_size_file))
         ini_write(fn_config, 'op', 'save_before_closing_tab', bool_to_str(opt_save_onclose))
         ini_write(fn_config, 'op', 'save_on_deactivate', bool_to_str(opt_save_ondeact))
         ini_write(fn_config, 'op', 'save_on_tab_change', bool_to_str(opt_save_ontabchange))
+        ini_write(fn_config, 'op', 'save_session', bool_to_str(opt_save_session))
+        ini_write(fn_config, 'op', 'session_flags', opt_session_flags)
         file_open(fn_config)
 
     def on_close_pre(self, ed_self):

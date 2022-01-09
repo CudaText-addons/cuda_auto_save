@@ -1,12 +1,11 @@
 Plugin for CudaText.
-
-"Auto Save" automatically saves modified files. It handles only named tabs,
-ignoring untitled tabs.
+"Auto Save" automatically saves modified files.
+When used under CudaText 1.153.1+, it handles also untitled documents.
 
 Plugin options
 --------------
 
-You can access to options using "Options / Settings-plugins / Auto Save / Config"
+You can access options using menu: "Options / Settings-plugins / Auto Save / Config"
 
 - "save_interval_seconds" (number, default: 30)
   interval of timer which auto-saves files, in seconds.
@@ -25,6 +24,18 @@ You can access to options using "Options / Settings-plugins / Auto Save / Config
 
 - "save_on_tab_change" (0 or 1, default: 0)
   enables to auto-save file after changing active tab.
+
+- "save_session" (0 or 1, default: 1)
+  if 1: plugin saves the entire current session (includes saving of untitled
+  documents by default, directly to the session JSON file).
+  if 0: plugin uses the 'old' method, without session, it saves only named
+  modified documents to their files.
+
+- "session_flags" (string, has several option-chars, default: empty)
+  options used for save_session=1.
+  if has char 'n': don't save modified named files to the session.
+  if has char 'u': don't save untitled documents to the session.
+
 
 About
 -----
