@@ -12,6 +12,7 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
   to disable auto-saving by timer, set to 0.
 
 - "save_max_MB_file_size" (number, default: 5)
+  used only if "save_session" is 0.
   max size in MB where plugin will proceed with auto-saving.
   to auto-save regardless the file size, set to 0.
 
@@ -20,7 +21,6 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
 
 - "on_deactivate" (0 or 1, default: 0)
   enables to auto-save when CudaText looses focus.
-  requires CudaText 1.114+.
 
 - "save_on_tab_change" (0 or 1, default: 0)
   enables to auto-save file after changing active tab.
@@ -32,7 +32,7 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
   modified documents to their files.
 
 - "session_flags" (string, has several option-chars, default: empty)
-  option used when "save_session" is 1.
+  option is used when "save_session" is 1.
   option works only under CudaText 1.153.1+.
   if has char 'n': don't save modified named files to the session.
   if has char 'u': don't save untitled documents to the session.
