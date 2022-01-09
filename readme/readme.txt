@@ -1,6 +1,6 @@
 Plugin for CudaText.
-"Auto Save" automatically saves modified files.
-When used under CudaText 1.153.1+, it handles also untitled documents.
+"Auto Save" automatically saves modified documents.
+Now it saves also untitled documents (by option).
 
 Plugin options
 --------------
@@ -32,7 +32,8 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
   modified documents to their files.
 
 - "session_flags" (string, has several option-chars, default: empty)
-  options used for save_session=1.
+  option used when "save_session" is 1.
+  option works only under CudaText 1.153.1+.
   if has char 'n': don't save modified named files to the session.
   if has char 'u': don't save untitled documents to the session.
 
