@@ -149,9 +149,9 @@ class Command:
 
         # Add some comments to provide help guidelines in file config.
         with open(fn_config, "a") as f:
-            f.write('; save_interval_seconds=0 to deactivate.\n')
-            f.write('; save_max_MB_file_size=0 to deactivate.\n')
-            f.write('; session_flags can have chars "n", "u".\n')
+            f.write('; save_interval_seconds=0 to deactivate timer.\n')
+            f.write('; save_max_MB_file_size=0 to deactivate size checks.\n')
+            f.write('; session_flags can have chars "n", "u"; e.g. session_flags=nu\n')
 
         ini_write(fn_config, 'op', 'save_interval_seconds', str(opt_save_interval_seconds))
         ini_write(fn_config, 'op', 'save_max_MB_file_size', str(opt_save_max_mb_size_file))
