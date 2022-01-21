@@ -1,9 +1,9 @@
+import os
 from datetime import datetime
-from os import path, remove
 from cudatext import *
 
 plugin_name = __name__
-fn_config = path.join(app_path(APP_DIR_SETTINGS), 'cuda_auto_save.ini')
+fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_auto_save.ini')
 
 opt_save_interval_seconds = 30
 opt_save_max_mb_size_file = 5
@@ -69,8 +69,8 @@ def save_one(e, msg):
         return
 
     Log.debug('Processing file: ' + fn)
-    if path.isfile(fn):
-        fn_KB_size = path.getsize(fn) // 1024
+    if os.path.isfile(fn):
+        fn_KB_size = os.path.getsize(fn) // 1024
         Log.debug(get_log_file_size(fn_KB_size))
 
         if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
@@ -94,7 +94,7 @@ def recreate_events(inc_event='', setup_timer=1):
     global opt_session_flags
 
     # Read settings if config file exists.
-    if path.isfile(fn_config):
+    if os.path.isfile(fn_config):
         opt_save_interval_seconds = int(ini_read(fn_config, 'op', 'save_interval_seconds', str(opt_save_interval_seconds)))
         opt_save_max_mb_size_file = int(ini_read(fn_config, 'op', 'save_max_MB_file_size', str(opt_save_max_mb_size_file)))
         opt_save_onclose = str_to_bool(ini_read(fn_config, 'op', 'save_before_closing_tab', bool_to_str(opt_save_onclose)))
@@ -140,7 +140,8 @@ class Command:
         recreate_events(inc_event='on_close', setup_timer=0)
 
         # Delete file in case there are more settings of previous version
-        if path.isfile(fn_config): remove(fn_config)
+        if os.path.isfile(fn_config):
+            os.remove(fn_config)
 
         # Add some comments to provide help guidelines in file config.
         with open(fn_config, "a") as f:
