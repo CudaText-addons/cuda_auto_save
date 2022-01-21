@@ -16,24 +16,18 @@ opt_session_flags = ''
 
 # Simple implementation of logger.
 class Log:
-    info_ = True
-    # Change conditional to True to log messages in a Debug process
+    info_ = False
     debug_ = False
-
-    def __init__(self):
-        pass
 
     @staticmethod
     def info(s):
         if Log.info_:
-            print(datetime.now().strftime("%H:%M:%S,%f") + ' [INFO] ' +
-                  plugin_name + ' - ' + str(s))
+            print(datetime.now().strftime("%H:%M:%S") + ' [INFO] ' + plugin_name + ' - ' + s)
 
     @staticmethod
     def debug(s):
         if Log.debug_:
-            print(datetime.now().strftime("%H:%M:%S,%f") + ' [DEBUG] ' +
-                  plugin_name + ' - ' + str(s))
+            print(datetime.now().strftime("%H:%M:%S") + ' [DEBUG] ' + plugin_name + ' - ' + s)
 
 
 def bool_to_str(v): return '1' if v else '0'
@@ -53,6 +47,10 @@ def save_all(msg):
     global opt_save_session
     global opt_session_flags
     
+    for h in ed_handles():
+        e = Editor(h)
+        save_one(e, 'Saving file (' + msg + ')')
+
     if opt_save_session:
         text = app_path(APP_FILE_SESSION)
         if app_api_version()>='1.0.415':
@@ -61,28 +59,25 @@ def save_all(msg):
                 text += 't'
         app_proc(PROC_SAVE_SESSION, text)
         Log.info('Saving session (' + msg + ')')
-    else:
-        for h in ed_handles():
-            e = Editor(h)
-            save_one(e, 'Saving file (' + msg + '): ')
 
 
 def save_one(e, msg):
     fn = e.get_filename()
-
     if not fn: return
 
-    Log.debug('Processing file: ' + fn)
-    if e.get_prop(PROP_MODIFIED, ''):
-        if path.isfile(fn):
-            fn_KB_size = path.getsize(fn) // 1024
-            Log.debug(get_log_file_size(fn_KB_size))
+    if not e.get_prop(PROP_MODIFIED, ''):
+        return
 
-            if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
-                e.save()
-                Log.info(msg + fn)
-        else:
-            Log.info('File was moved or deleted: ' + fn)
+    Log.debug('Processing file: ' + fn)
+    if path.isfile(fn):
+        fn_KB_size = path.getsize(fn) // 1024
+        Log.debug(get_log_file_size(fn_KB_size))
+
+        if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
+            e.save()
+            Log.info(msg + ': ' + fn)
+    else:
+        Log.info('File was moved or deleted: ' + fn)
 
 
 def timer_tick(tag='', info=''):

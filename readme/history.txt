@@ -1,4 +1,7 @@
 
+2022.01.21
+- fix: value save_session=1 prevented to save modified files
+
 2022.01.09 (Alexey T.)
 * changed the default method of files saving - now plugin saves the entire session, including untitled tabs
 + added options: "save_session", "session_flags"
