@@ -1,4 +1,7 @@
 
+2022.03.15
+* change: limit minimal value of "save_interval_seconds" by 10
+
 2022.01.21
 - fix: value save_session=1 prevented to save modified files
 
