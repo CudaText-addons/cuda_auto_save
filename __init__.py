@@ -2,6 +2,8 @@ import os
 from datetime import datetime
 from cudatext import *
 
+import tempfile
+
 plugin_name = __name__
 fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_auto_save.ini')
 
@@ -12,6 +14,7 @@ opt_save_ondeact = False
 opt_save_ontabchange = False
 opt_save_session = True
 opt_session_flags = ''
+opt_not_save_tmpdir = False
 
 
 # Simple implementation of logger.
@@ -46,7 +49,7 @@ def get_log_file_size(fn_KB_size):
 def save_all(msg):
     global opt_save_session
     global opt_session_flags
-    
+
     for h in ed_handles():
         e = Editor(h)
         save_one(e, 'Saving file (' + msg + ')')
@@ -64,6 +67,10 @@ def save_all(msg):
 def save_one(e, msg):
     fn = e.get_filename()
     if not fn: return
+
+    if opt_not_save_tmpdir:
+        if fn.find(tempfile.gettempdir() + os.sep) != -1:
+            return
 
     if not e.get_prop(PROP_MODIFIED, ''):
         return
@@ -92,6 +99,7 @@ def recreate_events(inc_event='', setup_timer=1):
     global opt_save_ontabchange
     global opt_save_session
     global opt_session_flags
+    global opt_not_save_tmpdir
 
     # Read settings if config file exists.
     if os.path.isfile(fn_config):
@@ -103,6 +111,7 @@ def recreate_events(inc_event='', setup_timer=1):
         opt_save_ontabchange = str_to_bool(ini_read(fn_config, 'op', 'save_on_tab_change', bool_to_str(opt_save_ontabchange)))
         opt_save_session = str_to_bool(ini_read(fn_config, 'op', 'save_session', bool_to_str(opt_save_session)))
         opt_session_flags = ini_read(fn_config, 'op', 'session_flags', opt_session_flags)
+        opt_not_save_tmpdir = str_to_bool(ini_read(fn_config, 'op', 'not_save_tmpdir', bool_to_str(opt_not_save_tmpdir)))
 
     events = []
     if inc_event: events.append(inc_event)
@@ -157,6 +166,7 @@ class Command:
         ini_write(fn_config, 'op', 'save_on_tab_change', bool_to_str(opt_save_ontabchange))
         ini_write(fn_config, 'op', 'save_session', bool_to_str(opt_save_session))
         ini_write(fn_config, 'op', 'session_flags', opt_session_flags)
+        ini_write(fn_config, 'op', 'not_save_tmpdir', bool_to_str(opt_not_save_tmpdir))
         file_open(fn_config)
 
     def on_close_pre(self, ed_self):

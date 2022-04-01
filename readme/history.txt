@@ -1,3 +1,5 @@
+2022.04.11
++ added option "not_save_tmpdir" (0/1) to not save in tmp-dir (patch by @ildarkhasanshin)
 
 2022.03.15
 * change: limit minimal value of "save_interval_seconds" by 10
