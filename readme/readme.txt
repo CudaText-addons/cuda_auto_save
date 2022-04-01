@@ -37,7 +37,7 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
   if has char 'n': don't save modified named files to the session.
   if has char 'u': don't save untitled documents to the session.
 
-- "not_save_tmpdir" (0 or 1, default: 0)
+- "ignore_temp_files" (0 or 1, default: 0)
   if 0: files in tmp-dir are saved
   if 1: files in tmp-dir are not saved
 
