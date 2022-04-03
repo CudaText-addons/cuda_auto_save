@@ -69,8 +69,8 @@ def save_one(e, msg):
     if not fn: return
 
     if opt_ignore_temp_files:
-        tmpdir = tempfile.gettempdir()
-        if fn.startswith(tmpdir) != -1:
+        tmpdir = tempfile.gettempdir() + os.sep
+        if fn.startswith(tmpdir):
             return
 
     if not e.get_prop(PROP_MODIFIED, ''):
