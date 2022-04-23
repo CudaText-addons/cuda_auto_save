@@ -1,3 +1,7 @@
+
+2022.04.23
+- fix: regression in 2022.03.15, can't set timer-interval to 0 (by @ildarkhasanshin)
+
 2022.04.03
 + added option "ignore_temp_files" (0/1) to not save in tmp-dir (patch by @ildarkhasanshin)
 
