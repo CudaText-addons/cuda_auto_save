@@ -105,7 +105,7 @@ def recreate_events(inc_event='', setup_timer=1):
     # Read settings if config file exists.
     if os.path.isfile(fn_config):
         opt_save_interval_seconds = int(ini_read(fn_config, 'op', 'save_interval_seconds', str(opt_save_interval_seconds)))
-        opt_save_interval_seconds = max(10, opt_save_interval_seconds) # dont allow too small value
+        opt_save_interval_seconds = max(10, opt_save_interval_seconds) if opt_save_interval_seconds > 0 else 0 # dont allow too small value
         opt_save_max_mb_size_file = int(ini_read(fn_config, 'op', 'save_max_MB_file_size', str(opt_save_max_mb_size_file)))
         opt_save_onclose = str_to_bool(ini_read(fn_config, 'op', 'save_before_closing_tab', bool_to_str(opt_save_onclose)))
         opt_save_ondeact = str_to_bool(ini_read(fn_config, 'op', 'save_on_deactivate', bool_to_str(opt_save_ondeact)))
@@ -190,3 +190,5 @@ class Command:
         if not fn: return
 
         if fn == fn_config: recreate_events()
+
+# test
