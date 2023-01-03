@@ -41,6 +41,9 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
   if 0: files in tmp-dir are saved
   if 1: files in tmp-dir are not saved
 
+- "save_on_editor_change" (0 or 1, default: 0)
+  enables to auto-save file after editor text is changed.
+  
 About
 -----
 

@@ -15,6 +15,7 @@ opt_save_ontabchange = False
 opt_save_session = True
 opt_session_flags = ''
 opt_ignore_temp_files = False
+opt_save_onchange = False
 
 
 # Simple implementation of logger.
@@ -101,6 +102,7 @@ def recreate_events(inc_event='', setup_timer=1):
     global opt_save_session
     global opt_session_flags
     global opt_ignore_temp_files
+    global opt_save_onchange
 
     # Read settings if config file exists.
     if os.path.isfile(fn_config):
@@ -113,6 +115,7 @@ def recreate_events(inc_event='', setup_timer=1):
         opt_save_session = str_to_bool(ini_read(fn_config, 'op', 'save_session', bool_to_str(opt_save_session)))
         opt_session_flags = ini_read(fn_config, 'op', 'session_flags', opt_session_flags)
         opt_ignore_temp_files = str_to_bool(ini_read(fn_config, 'op', 'ignore_temp_files', bool_to_str(opt_ignore_temp_files)))
+        opt_save_onchange = str_to_bool(ini_read(fn_config, 'op', 'save_on_editor_change', bool_to_str(opt_save_onchange)))
 
     events = []
     if inc_event: events.append(inc_event)
@@ -120,6 +123,7 @@ def recreate_events(inc_event='', setup_timer=1):
     if not opt_save_ontabchange and opt_save_onclose: events.append('on_close_pre')
     if opt_save_ondeact: events.append('on_app_deactivate')
     if opt_save_ontabchange: events.append('on_tab_change')
+    if opt_save_onchange: events.append('on_change_slow')
 
     Log.info('Recreating events: ' + ','.join(events))
     app_proc(PROC_SET_EVENTS, plugin_name + ';' + ','.join(events) + ';;')
@@ -168,11 +172,12 @@ class Command:
         ini_write(fn_config, 'op', 'save_session', bool_to_str(opt_save_session))
         ini_write(fn_config, 'op', 'session_flags', opt_session_flags)
         ini_write(fn_config, 'op', 'ignore_temp_files', bool_to_str(opt_ignore_temp_files))
+        ini_write(fn_config, 'op', 'save_on_editor_change', bool_to_str(opt_save_onchange))
         file_open(fn_config)
 
     def on_close_pre(self, ed_self):
         Log.debug('on_close_pre event')
-        save_one(ed_self, 'Auto-saved (File closes): ')
+        save_one(ed_self, 'Closing file')
 
     def on_app_deactivate(self, ed_self):
         Log.debug('on_app_deactivate event')
@@ -182,6 +187,10 @@ class Command:
         Log.debug('on_tab_change event')
         save_all('Tab change')
 
+    def on_change_slow(self, ed_self):
+        Log.debug('on_change_slow event')
+        save_one(ed_self, 'Editor change')
+
     def on_close(self, ed_self):
         # Used only to catch when Config file is modified and saved
         Log.debug('on_close event')
@@ -190,5 +199,3 @@ class Command:
         if not fn: return
 
         if fn == fn_config: recreate_events()
-
-# test
