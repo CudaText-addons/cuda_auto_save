@@ -1,3 +1,5 @@
+2023.01.02 (patch by @JairoMartinezA)
++ added option "save_on_editor_change" (0/1) to save when editor text is changed
 
 2022.04.23
 - fix: regression in 2022.03.15, can't set timer-interval to 0 (by @ildarkhasanshin)
