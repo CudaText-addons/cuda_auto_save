@@ -1,11 +1,12 @@
 Plugin for CudaText.
-"Auto Save" automatically saves modified documents.
-Now it saves also untitled documents (by option).
+It automatically saves modified documents.
+It also saves untitled documents (by option).
 
 Plugin options
 --------------
 
-You can access options using menu: "Options / Settings-plugins / Auto Save / Config"
+You can access options using menu: "Options / Settings-plugins / Auto Save / Config".
+This will create the initial config file in INI format in the "settings" app dir.
 
 - "save_interval_seconds" (number, default: 30)
   interval of timer which auto-saves files, in seconds.
@@ -19,7 +20,7 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
 - "save_before_closing_tab" (0 or 1, default: 0)
   enables to auto-save file just before its closing (without any confirmation).
 
-- "on_deactivate" (0 or 1, default: 0)
+- "save_on_deactivate" (0 or 1, default: 0)
   enables to auto-save when CudaText looses focus.
 
 - "save_on_tab_change" (0 or 1, default: 0)
@@ -33,7 +34,6 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
 
 - "session_flags" (string, has several option-chars, default: empty)
   option is used when "save_session" is 1.
-  option works only under CudaText 1.153.1+.
   if has char 'n': don't save modified named files to the session.
   if has char 'u': don't save untitled documents to the session.
 
@@ -42,8 +42,9 @@ You can access options using menu: "Options / Settings-plugins / Auto Save / Con
   if 1: files in tmp-dir are not saved
 
 - "save_on_editor_change" (0 or 1, default: 0)
-  enables to auto-save file after editor text is changed.
-  
+  enables to auto-save file after editor text is changed,
+  and small pause is passed.
+
 About
 -----
 
