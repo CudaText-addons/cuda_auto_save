@@ -42,8 +42,8 @@ This will create the initial config file in INI format in the "settings" app dir
   if 1: files in tmp-dir are not saved
 
 - "save_on_editor_change" (0 or 1, default: 0)
-  enables to auto-save file after editor text is changed,
-  and small pause is passed.
+  enables to auto-save file after editor text is changed, and small pause is passed.
+  pause can be changed by CudaText option "py_change_slow".
 
 About
 -----
