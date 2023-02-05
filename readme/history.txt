@@ -1,3 +1,6 @@
+2023.02.05
++ added option "ignore_saving_trim_spaces" (0/1) to ignore trim trailing whitespaces (patch by @ildarkhasanshin)
+
 2023.01.02
 + added option "save_on_editor_change" (0/1) to save when editor text is changed (patch by @JairoMartinezA)
 
