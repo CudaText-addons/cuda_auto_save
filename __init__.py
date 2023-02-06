@@ -16,7 +16,9 @@ opt_save_session = True
 opt_session_flags = ''
 opt_ignore_temp_files = False
 opt_save_onchange = False
+
 opt_ignore_saving_trim_spaces = False
+global_prop_saving_trim_spaces = ed.get_prop(PROP_SAVING_TRIM_SPACES)
 
 
 # Simple implementation of logger.
@@ -86,13 +88,18 @@ def save_one(e, msg):
         if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
             check_ignore_saving_trim_spaces()
             e.save()
+            check_ignore_saving_trim_spaces(True)
             Log.info(msg + ': ' + fn)
     else:
         Log.info('File was moved or deleted: ' + fn)
 
-def check_ignore_saving_trim_spaces():
+def check_ignore_saving_trim_spaces(return_option = False):
     if opt_ignore_saving_trim_spaces:
-        ed.set_prop(PROP_SAVING_TRIM_SPACES, '0')
+        if return_option:
+            if global_prop_saving_trim_spaces:
+                ed.set_prop(PROP_SAVING_TRIM_SPACES, True)
+        else:
+            ed.set_prop(PROP_SAVING_TRIM_SPACES, False)
 
 def timer_tick(tag='', info=''):
     save_all('By timer')
