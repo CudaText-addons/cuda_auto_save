@@ -17,6 +17,9 @@ opt_session_flags = ''
 opt_ignore_temp_files = False
 opt_save_onchange = False
 
+opt_ignore_saving_trim_spaces = False
+global_prop_saving_trim_spaces = ed.get_prop(PROP_SAVING_TRIM_SPACES)
+
 
 # Simple implementation of logger.
 class Log:
@@ -83,11 +86,20 @@ def save_one(e, msg):
         Log.debug(get_log_file_size(fn_KB_size))
 
         if opt_save_max_mb_size_file == 0 or fn_KB_size // 1024 <= opt_save_max_mb_size_file:
+            check_ignore_saving_trim_spaces()
             e.save()
+            check_ignore_saving_trim_spaces(True)
             Log.info(msg + ': ' + fn)
     else:
         Log.info('File was moved or deleted: ' + fn)
 
+def check_ignore_saving_trim_spaces(return_option = False):
+    if opt_ignore_saving_trim_spaces:
+        if return_option:
+            if global_prop_saving_trim_spaces:
+                ed.set_prop(PROP_SAVING_TRIM_SPACES, True)
+        else:
+            ed.set_prop(PROP_SAVING_TRIM_SPACES, False)
 
 def timer_tick(tag='', info=''):
     save_all('By timer')
@@ -103,6 +115,7 @@ def recreate_events(inc_event='', setup_timer=1):
     global opt_session_flags
     global opt_ignore_temp_files
     global opt_save_onchange
+    global opt_ignore_saving_trim_spaces
 
     # Read settings if config file exists.
     if os.path.isfile(fn_config):
@@ -116,6 +129,7 @@ def recreate_events(inc_event='', setup_timer=1):
         opt_session_flags = ini_read(fn_config, 'op', 'session_flags', opt_session_flags)
         opt_ignore_temp_files = str_to_bool(ini_read(fn_config, 'op', 'ignore_temp_files', bool_to_str(opt_ignore_temp_files)))
         opt_save_onchange = str_to_bool(ini_read(fn_config, 'op', 'save_on_editor_change', bool_to_str(opt_save_onchange)))
+        opt_ignore_saving_trim_spaces = str_to_bool(ini_read(fn_config, 'op', 'ignore_saving_trim_spaces', bool_to_str(opt_ignore_saving_trim_spaces)))
 
     events = []
     if inc_event: events.append(inc_event)
@@ -173,6 +187,7 @@ class Command:
         ini_write(fn_config, 'op', 'session_flags', opt_session_flags)
         ini_write(fn_config, 'op', 'ignore_temp_files', bool_to_str(opt_ignore_temp_files))
         ini_write(fn_config, 'op', 'save_on_editor_change', bool_to_str(opt_save_onchange))
+        ini_write(fn_config, 'op', 'ignore_saving_trim_spaces', bool_to_str(opt_ignore_saving_trim_spaces))
         file_open(fn_config)
 
     def on_close_pre(self, ed_self):
