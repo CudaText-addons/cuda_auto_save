@@ -122,7 +122,7 @@ def recreate_events(inc_event='', setup_timer=1):
     # on_tab_change event is called before on_close_pre event
     if not opt_save_ontabchange and opt_save_onclose: events.append('on_close_pre')
     if opt_save_ondeact: events.append('on_app_deactivate')
-    if opt_save_ontabchange: events.append('on_tab_change')
+    if opt_save_ontabchange: events.append('on_focus')
     if opt_save_onchange: events.append('on_change_slow')
 
     Log.info('Recreating events: ' + ','.join(events))
@@ -183,13 +183,13 @@ class Command:
         Log.debug('on_app_deactivate event')
         save_all('App deactivated')
 
-    def on_tab_change(self, ed_self):
-        Log.debug('on_tab_change event')
-        save_all('Tab change')
+    def on_focus(self, ed_self):
+        Log.debug('on_focus event')
+        save_all('Focus changed')
 
     def on_change_slow(self, ed_self):
         Log.debug('on_change_slow event')
-        save_one(ed_self, 'Editor change')
+        save_one(ed_self, 'Editor changed')
 
     def on_close(self, ed_self):
         # Used only to catch when Config file is modified and saved
