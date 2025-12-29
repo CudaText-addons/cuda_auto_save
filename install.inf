@@ -4,6 +4,7 @@ desc=Saves modified files automatically: before file closing (by option, default
 type=cudatext-plugin
 subdir=cuda_auto_save
 homepage=https://github.com/CudaText-addons/cuda_auto_save
+api=1.0.471
 
 [item1]
 section=events
@@ -14,4 +15,3 @@ section=commands
 caption=Auto Save\Config
 method=config
 menu=o
-

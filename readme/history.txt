@@ -1,3 +1,6 @@
+2025.12.29
+- fix: avoid deprecated API
+
 2023.03.10
 - fix: option "save_on_tab_change" must use different API event: on_focus
 
@@ -35,4 +38,4 @@
   focus; requires CudaText 1.114
 
 2018.06.09
-+ initial
+initial version

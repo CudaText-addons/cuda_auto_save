@@ -118,15 +118,22 @@ def recreate_events(inc_event='', setup_timer=1):
         opt_save_onchange = str_to_bool(ini_read(fn_config, 'op', 'save_on_editor_change', bool_to_str(opt_save_onchange)))
 
     events = []
-    if inc_event: events.append(inc_event)
+    if inc_event:
+        events.append(inc_event)
     # on_tab_change event is called before on_close_pre event
-    if not opt_save_ontabchange and opt_save_onclose: events.append('on_close_pre')
-    if opt_save_ondeact: events.append('on_app_deactivate')
-    if opt_save_ontabchange: events.append('on_focus')
-    if opt_save_onchange: events.append('on_change_slow')
+    if not opt_save_ontabchange and opt_save_onclose:
+        events.append('on_close_pre')
+    if opt_save_ondeact:
+        events.append('on_app_deactivate')
+    if opt_save_ontabchange:
+        events.append('on_focus')
+    if opt_save_onchange:
+        events.append('on_change_slow')
 
     Log.info('Recreating events: ' + ','.join(events))
-    app_proc(PROC_SET_EVENTS, plugin_name + ';' + ','.join(events) + ';;')
+    app_proc(PROC_EVENTS_UNSUB, plugin_name + ';' + 'on_close_pre,on_app_deactivate,on_focus,on_change_slow' + ';;')
+    if events:
+        app_proc(PROC_EVENTS_SUB, plugin_name + ';' + ','.join(events) + ';;')
 
     if setup_timer != 1: return
 
@@ -198,4 +205,5 @@ class Command:
         fn = ed_self.get_filename()
         if not fn: return
 
-        if fn == fn_config: recreate_events()
+        if fn == fn_config:
+            recreate_events()
